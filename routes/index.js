@@ -15,7 +15,7 @@ router.get('/', auth, function(req, res){
   res.render("login", {errors: req.session.errors});
 });
 
-router.get("/home", function(req, res, next) {
+router.get("/login", function(req, res, next) {
   if (req.session.token) {
     next();
   } else {
@@ -27,7 +27,7 @@ router.get("/home", function(req, res, next) {
 
 
 
-router.post('/home',  function(req, res){
+router.post('/login',  function(req, res){
   console.log("post");
 
 req.checkBody("username", "Name must have no special charcters").isAlpha();
@@ -60,7 +60,7 @@ let errors = req.getValidationResult().then(function(error) {
    req.session.token = "token";
    console.log(user.username);
 
-   res.redirect('/home');
+   res.redirect('/login');
   } else {
     req.session.errors = ["Incorrect Login"];
     res.redirect("/");
