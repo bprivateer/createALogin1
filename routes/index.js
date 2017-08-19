@@ -11,7 +11,7 @@ function auth(req, res, next){
   }
 };
 
-router.get('/', auth, function(req, res){
+router.get('/', function(req, res){
   res.render("login", {errors: req.session.errors});
 });
 
@@ -24,9 +24,6 @@ router.get("/login", function(req, res, next) {
 }, function(req, res) {
   res.render("results", req.session.dummy_user);
 });
-
-
-
 router.post('/login',  function(req, res){
   console.log("post");
 
@@ -38,10 +35,8 @@ req.checkBody("password", "Password must be 8 letters long").isLength({min:8});
 let messages = [];
 
 let errors = req.getValidationResult().then(function(error) {
-  // console.log(error.array());
   error.array().forEach(function(error){
     messages.push(error.msg)
-    // console.log(error.msg);
     console.log('messages\n', messages);
   })
   if (messages.length > 0){
@@ -59,11 +54,13 @@ let errors = req.getValidationResult().then(function(error) {
    req.session.dummy_user = user;
    req.session.token = "token";
    console.log(user.username);
+   console.log(req.session.token);
 
    res.redirect('/login');
   } else {
     req.session.errors = ["Incorrect Login"];
     res.redirect("/");
+    console.log("incorrect", req.session.token);
   }
   // console.log(error.array(param));
 });
